@@ -1,29 +1,37 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:16
+    container_name: realestateapp-db
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: realestate
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   backend:
-    image: miketud/realestateapp-backend:latest
+    build:
+      context: ./backend/node
+    container_name: realestateapp-backend
+    restart: always
     depends_on:
       - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@db:5432/realestate"
+      NODE_ENV: "production"
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://postgres:password@db:5432/realestate
-      NODE_ENV: production
 
   frontend:
-    image: miketud/realestateapp-frontend:latest
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: "http://realestateapp-backend:3000"
+    container_name: realestateapp-frontend
+    restart: always
     depends_on:
       - backend
     ports:
