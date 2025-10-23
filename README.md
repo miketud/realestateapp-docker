@@ -13,7 +13,7 @@ QUICK START
 
 	Download and install [Docker Desktop](https://www.docker.com/get-started/) for your system (Windows, macOS, or Linux).
 
-2. Clone this repository
+2. Clone this repository or just save the docker-compose file and run (step 3)
 
 		git clone https://github.com/miketud/realestateapp-docker.git
 		cd realestateapp-docker
@@ -36,7 +36,7 @@ QUICK START
 5. Managing Containers (Docker)
 
 	Stop all running containers:
-		docker compose up
+		docker compose down
 
 	Stop and remove volumes (delete database data):
 		docker compose down -v
